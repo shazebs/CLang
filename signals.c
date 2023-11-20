@@ -4,6 +4,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <signal.h>
+
 void wakeup_handler(int num){
   printf("****SIGNAL RECEIVED BY CHILD PROCESS****\n");
   for (int c=1; c<=20; c++){
@@ -11,6 +12,7 @@ void wakeup_handler(int num){
     sleep(1);
   }
 }
+
 void main(void){
   pid_t pid = fork();
   if (pid==0){
