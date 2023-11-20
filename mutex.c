@@ -15,6 +15,7 @@ void* deposits_thread(){
 }
 
 int main(void){
+  //pthread_mutex_init(&mutex, 0);
   pthread_t tid1;
   pthread_create(&tid1, NULL, deposits_thread, NULL);
 
@@ -24,7 +25,7 @@ int main(void){
 
   pthread_join(tid1, NULL);
   pthread_join(tid2, NULL);
-
+  pthread_mutex_destroy(&mutex);
   printf("Final bank balance = $%lld\n", bankbalance);
   return 0;
 }
