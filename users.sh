@@ -22,7 +22,6 @@ add_users() {
       continue
     fi
     # add the user and set password
-    #sudo adduser -m -G "$group_name" -p "$password_hash" "$user_id"
     sudo useradd -m "$user_id" && echo "$user_id:$password_hash" | sudo chpasswd
     echo "User '$user_id' added."
   done < "$filename"
