@@ -12,8 +12,8 @@ Date: Fri.Nov.24.2023
 #include <pthread.h>
 
 // GLOBAL variables
-#define MAX_LOOPS 100
-#define BUFFER_EOF 101
+#define MAX_LOOPS 10
+#define BUFFER_EOF 11
 
 pid_t pid;
 pid_t other_pid;
@@ -38,6 +38,9 @@ int main(){
   srand(time(NULL));
   // CREATE BUFFER
   buffer = (struct CIRCULAR_BUFFER*)mmap(0,sizeof(buffer), PROT_READ|PROT_WRITE,MAP_SHARED|MAP_ANONYMOUS, -1, 0);
+  buffer->count = 0;
+  buffer->lower = 0;
+  buffer->upper = 0;
 
   // begin fork()
   pid = fork();
@@ -89,7 +92,7 @@ void producer()
   {
     sleep(1);
     int rand_num = rand() % 101;
-    //pthread_mutex_lock(&mutex);
+    pthread_mutex_lock(&mutex);
     if (buffer->count < MAX_LOOPS)
     {
       buffer->count = buffer->count + 1;        // increment count
@@ -109,7 +112,7 @@ void producer()
         kill(other_pid, SIGUSR1); // wakeup Consumer process
       }
     }
-    //pthread_mutex_unlock(&mutex);
+    pthread_mutex_unlock(&mutex);
     loop_count++;
   }
   printf("PRODUCER: done writing, buffer is full.\n");
@@ -123,7 +126,7 @@ void consumer()
   while (count < MAX_LOOPS)
   {
     sleep(1);
-    // pthread_mutex_lock(&mutex);
+    pthread_mutex_lock(&mutex);
     if (buffer->count > 0)
     {
       if (buffer->lower < buffer->upper)
@@ -136,7 +139,7 @@ void consumer()
         }
       }
     }
-    // pthread_mutex_unlock(&mutex);
+    pthread_mutex_unlock(&mutex);
     count++;
   }
   printf("CONSUMER: done reading, buffer is empty.\n\n");
