@@ -12,7 +12,7 @@ sem_t *semaphore;
 pid_t otherPid;
 sigset_t sigSet;
 
-void signalHandler(int signum)
+void signalHandler1(int signum)
 {
     printf("Caught Signal: %d\n", signum);
     printf("    Exit Child Process.\n");
@@ -20,7 +20,7 @@ void signalHandler(int signum)
     _exit(0);
 }
 
-void signalHandler(int signum)
+void signalHandler2(int signum)
 {
     printf("I am alive.\n");
 }
