@@ -1,6 +1,6 @@
 /*
 Author: Shazeb Suhail
-Date: Fri.Nov.24.2023
+Date: Sun.Feb.11.2024
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -131,6 +131,7 @@ void consumer()
     {
       if (buffer->lower < buffer->upper)
       {
+        // Read from the buffer
         printf("\tCONSUMER: buffer[%d]=%d\n\n", buffer->lower, buffer->buffer[buffer->lower]);
         buffer->lower++;
         if (buffer->lower == BUFFER_EOF)
